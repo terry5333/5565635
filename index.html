@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>請稍後...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f5f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        #line-prompt {
+            display: none;
+            padding: 20px;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .arrow {
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            font-size: 18px;
+            color: #06C755; /* LINE 綠色 */
+            font-weight: bold;
+            animation: bounce 0.8s infinite alternate;
+        }
+        .container {
+            max-width: 400px;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin: 0 auto;
+        }
+        h2 {
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 15px;
+            margin: 12px 0;
+        }
+        .highlight {
+            color: #06C755;
+            font-weight: bold;
+        }
+        #redirecting {
+            color: #888;
+            font-size: 16px;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(8px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 狀況 A：在 LINE 內開啟時顯示的提示畫面 -->
+    <div id="line-prompt">
+        <div class="arrow">請點擊右上角選單 ↗</div>
+        <div class="container">
+            <h2>請切換至預設瀏覽器</h2>
+            <p>偵測到您目前正在使用 <span class="highlight">LINE 內建瀏覽器</span>。</p>
+            <p>為了確保 Google 表單能正常送出，請點擊右上角的<strong>「三個點 (⋯)」</strong>或<strong>「分享」</strong>圖示。</p>
+            <p>並選擇 <strong>「使用預設瀏覽器開啟」</strong> 或 <strong>「在 Safari / Chrome 開啟」</strong>。</p>
+        </div>
+    </div>
+
+    <!-- 狀況 B：一般瀏覽器轉址中的暫存文字 -->
+    <div id="redirecting">
+        <p>正在前往 Google 表單，請稍候...</p>
+    </div>
+
+    <script>
+        (function() {
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            // 檢查 User-Agent 是否含有 LINE 關鍵字
+            var isLine = ua.indexOf("Line/") > -1;
+
+            if (isLine) {
+                // 如果是 LINE 內開啟：隱藏轉址文字，顯示引導提示
+                document.getElementById('redirecting').style.display = 'none';
+                document.getElementById('line-prompt').style.display = 'block';
+            } else {
+                // 如果是一般瀏覽器：直接秒轉到 Google 表單
+                window.location.href = "https://forms.gle/WAewryC3FvLE94bA6";
+            }
+        })();
+    </script>
+</body>
+</html>
